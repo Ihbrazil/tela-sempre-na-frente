@@ -1,0 +1,46 @@
+unit UNTtelasemprenafrente;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, OleAuto, ShlObj, Vcl.ExtCtrls;
+
+type
+  TForm1 = class(TForm)
+    Timer1: TTimer;
+    Label1: TLabel;
+    procedure Timer1Timer(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+
+// tela sempre na frente
+function ForceForegroundWindow(hWnd: THandle): BOOL;
+var
+  hCurWnd: THandle;
+begin
+  hCurWnd := GetForegroundWindow;
+  AttachThreadInput( GetWindowThreadProcessId(hCurWnd, nil), GetCurrentThreadId, True);
+  Result := SetForegroundWindow(hWnd);
+
+  AttachThreadInput( GetWindowThreadProcessId(hCurWnd, nil), GetCurrentThreadId, False);
+end;
+// tela sempre na frente
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+    // tela sempre na frente
+    ForceForegroundWindow(Form1.Handle);
+end;
+
+end.
